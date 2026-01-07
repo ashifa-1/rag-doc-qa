@@ -92,30 +92,7 @@ Answer + Source Citations
 ## 📁 Project Structure
 
 
-
-rag-doc-qa/
-│
-├── data/
-│ └── raw/
-│ ├── pdfs/
-│ └── txts/
-│
-├── src/
-│ ├── loaders/
-│ ├── chunking/
-│ ├── embeddings/
-│ ├── vector_store/
-│ ├── retrieval/
-│ ├── prompts/
-│ ├── generation/
-│ └── main.py
-│
-├── architecture.png
-├── evaluation_report.md
-├── requirements.txt
-├── README.md
-└── .gitignore
-
+![Structure of the project](image-1.png)
 
 ---
 
