@@ -1,60 +1,234 @@
-# rag-doc-qa
+# RAG-Powered Document Question Answering System
 
-What problem does Retrieval-Augmented Generation (RAG) aim to solve in knowledge-intensive NLP tasks?
+##  Project Overview
 
+This project implements a **Retrieval-Augmented Generation (RAG)** based on Document Question Answering system.  
+The system allows users to ask natural language questions over a collection of **PDF and TXT documents** and generates answers that are **grounded in the retrieved documents**, along with **source citations**.
 
-How does RAG combine parametric and non-parametric memory?
+The goal of the project is to demonstrate how modern RAG pipelines combine:
+- semantic document retrieval, and
+- large language models (LLMs)
 
+to produce accurate, explainable, and source-aware answers.
 
-What is the difference between RAG-Sequence and RAG-Token models?
+---
 
+##  System Architecture and RAG Pipeline
 
-How are retrieved documents treated during training in RAG?
+The system follows a **modular RAG architecture**, where each stage of the pipeline is clearly separated.
 
-
-What are Thorough Decoding and Fast Decoding, and why are they needed in RAG-Sequence?
-
-
-What is the main idea behind the Transformer architecture proposed in the paper?
-
-
-How does self-attention differ from recurrent neural networks?
-
-
-What is scaled dot-product attention, and why is scaling used?
+###  High-Level Flow
 
 
-What role does multi-head attention play in the Transformer?
+
+Documents (PDF / TXT)
+
+↓
+
+Document Loaders
+
+↓
+
+Text Chunking (with overlap)
+
+↓
+
+Embedding Generation
+
+↓
+
+FAISS Vector Store
+
+↓
+
+Semantic Retrieval (Top-k)
+
+↓
+
+Prompt Construction
+
+↓
+
+LLM Answer Generation
+
+↓
+Answer + Source Citations
 
 
-Why does the Transformer model allow better parallelization than RNN-based models?
+###  Component Explanation
+
+- **Document Loaders**
+  - Load text from PDF and TXT files.
+  - Preserve metadata such as source file name and page number.
+
+- **Chunking**
+  - Large documents are split into fixed-size overlapping chunks.
+  - This ensures manageable input size and preserves context.
+
+- **Embeddings**
+  - Each chunk is converted into a dense vector using a sentence-transformer model.
+  - These embeddings capture semantic meaning.
+
+- **Vector Store (FAISS)**
+  - Embeddings are stored in an in-memory FAISS index.
+  - Enables fast similarity search.
+
+- **Retriever**
+  - Given a user query, retrieves the top-k most relevant chunks based on semantic similarity.
+
+- **Prompt Builder**
+  - Constructs a prompt that includes only the retrieved context.
+  - Prevents hallucination by grounding the LLM response.
+
+- **Answer Generator**
+  - Uses a local HuggingFace LLM to generate the final answer.
+  - Answers are based strictly on retrieved content.
+
+- **CLI Interface**
+  - Provides a simple command-line interface for users to ask questions and receive answers with sources.
+
+---
+
+## 📁 Project Structure
 
 
-How does the novel introduce the theme of marriage in the opening chapter?
+
+rag-doc-qa/
+│
+├── data/
+│ └── raw/
+│ ├── pdfs/
+│ └── txts/
+│
+├── src/
+│ ├── loaders/
+│ ├── chunking/
+│ ├── embeddings/
+│ ├── vector_store/
+│ ├── retrieval/
+│ ├── prompts/
+│ ├── generation/
+│ └── main.py
+│
+├── architecture.png
+├── evaluation_report.md
+├── requirements.txt
+├── README.md
+└── .gitignore
 
 
-What is Mr. Bennet’s attitude toward his family and society?
+---
+
+##  Environment Setup
+
+###  Prerequisites
+
+- Python **3.9 – 3.11**
+- Git
+- pip
+
+---
+
+###  Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/ashifa-1/rag-doc-qa
+```
+```bash
+cd rag-doc-qa
+```
+
+### Step 2: (Optional) Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+Activate it:
+
+- Windows
+
+```bash
+venv\Scripts\activate
+```
+
+- Mac / Linux
+
+```bash
+source venv/bin/activate
+```
+### Step 3: Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+### Step 4: Add Documents
+
+- Place your documents here:
+
+data/raw/pdfs/   → PDF files
+data/raw/txts/   → TXT files
 
 
-How is Elizabeth Bennet characterized in the early chapters?
+The system supports multiple documents and mixed formats.
+
+## Running the Application
+
+ Important: Always run the project from the root directory using module execution.
+
+```bash
+python -m src.main
+```
+
+On startup, the system will:
+
+- Load documents
+
+- Chunk text
+
+- Generate embeddings
+
+- Build the vector store
+
+You will then see:
+
+System ready. Ask your questions!
+
+#### Example Usage
+- Ask a Question
+
+**Enter your question (or type 'exit'):** What problem does Retrieval-Augmented Generation (RAG) aim to solve in knowledge-
+intensive NLP tasks?
+
+**ANSWER:**
+
+The retrieval component would "collapse" and learn to retrieve the same documents regardless of the input. 
+The collapse could be due to a less-explicit requirement for factual knowledge in some tasks, or the longer target sequences, which could result in less informative gradients for the retriever.
+
+ **SOURCES:**
+
+[1] rag_doc.pdf (page 1)
+
+[2] rag_doc.pdf (page 19)
+
+[3] rag_doc.pdf (page 17)
+
+[4] rag_doc.pdf (page 9)
+
+[5] rag_doc.pdf (page 1)
+
+[6] rag_doc.pdf (page 1)
+
+#### Handling Unknown Questions
+
+- If the information is not present in the documents:
+
+***ANSWER:***
+I don't know based on the provided documents.
+
+SOURCES:
+
+None
 
 
-What role does social class play in the interactions between characters?
+This behavior ensures no hallucination and maintains answer reliability.
 
-
-How does Jane Austen use irony in Pride and Prejudice?
-
-
-How does Alice first enter Wonderland?
-
-
-What role does the White Rabbit play in the story?
-
-
-How does Alice react to changes in her size?
-
-
-What kinds of logical or language-based absurdities appear in Wonderland?
-
-
-How does the story challenge normal rules of reality and behavior?
