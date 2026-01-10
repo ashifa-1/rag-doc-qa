@@ -1,5 +1,7 @@
 langchain
+
 sentence-transformers
+
 transformers
 torch
 numpy
