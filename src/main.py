@@ -36,7 +36,7 @@ def run_cli():
             print(" Goodbye!")
             break
 
-        retrieved_chunks = retriever.retrieve(question, top_k=6)
+        retrieved_chunks = retriever.retrieve(question, top_k=4)
 
         # 🔒 Relevance guard
         MAX_DISTANCE_THRESHOLD = 1.2  # safe for MiniLM
