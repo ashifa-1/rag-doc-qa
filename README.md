@@ -20,40 +20,7 @@ The system follows a **modular RAG architecture**, where each stage of the pipel
 ###  High-Level Flow
 
 
-
-Documents (PDF / TXT)
-
-↓
-
-Document Loaders
-
-↓
-
-Text Chunking (with overlap)
-
-↓
-
-Embedding Generation
-
-↓
-
-FAISS Vector Store
-
-↓
-
-Semantic Retrieval (Top-k)
-
-↓
-
-Prompt Construction
-
-↓
-
-LLM Answer Generation
-
-↓
-Answer + Source Citations
-
+![Architecture Flowchart](architecture.png)
 
 ###  Component Explanation
 
