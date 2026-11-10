@@ -3,9 +3,11 @@ def build_rag_prompt(context_chunks, question, max_chars=1500):
     total_chars = 0
 
     for i, chunk in enumerate(context_chunks, 1):
+        page_info = f", Page: {chunk['page']}" if chunk.get("page") is not None else ""
+        text = chunk.get("text") or chunk.get("chunk_text", "")
         block = (
-            f"[{i}] Source: {chunk['source']}, Page: {chunk['page']}\n"
-            f"{chunk['text']}\n\n"
+            f"[{i}] Source: {chunk['source']}{page_info}\n"
+            f"{text}\n\n"
         )
 
         if total_chars + len(block) > max_chars:
@@ -14,8 +16,7 @@ def build_rag_prompt(context_chunks, question, max_chars=1500):
         context_text += block
         total_chars += len(block)
 
-    prompt = f"""
-You are a question-answering assistant.
+    prompt = f"""You are a question-answering assistant.
 
 Use ONLY the context below to answer the question.
 Write a clear and concise answer in your own words.
@@ -32,3 +33,4 @@ Question:
 Answer:
 """
     return prompt
+

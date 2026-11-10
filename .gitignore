@@ -35,6 +35,7 @@ Thumbs.db
 # Model & embedding artifacts
 # ================================
 embeddings/
+data/cache/
 *.faiss
 *.pkl
 *.pt
